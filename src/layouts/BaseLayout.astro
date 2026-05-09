@@ -45,12 +45,40 @@ const isProd = import.meta.env.PROD;
   {isProd && (
     <script>
       (function() {
-        const password = "calebmiller10@icloud.com";
-        const hint = "It's my personal email I've shared.";
+        const COOKIE_NAME = "portfolio_access";
+        const COOKIE_VALUE = "calebmiller010";
+        const PASSWORD = "calebmiller10@icloud.com";
+        const HINT = "It's my personal email I've shared.";
+        const DAYS = 30;
+
+        function getCookie(name) {
+          const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+          return match ? match[2] : null;
+        }
+        function setCookie(name, value, days) {
+          const expires = new Date(Date.now() + days * 864e5).toUTCString();
+          document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/; SameSite=Lax';
+        }
+        function removeOverlay() {
+          const overlay = document.getElementById("pw-overlay");
+          if (overlay) overlay.remove();
+        }
+
+        // Already authenticated?
+        if (getCookie(COOKIE_NAME) === COOKIE_VALUE) {
+          removeOverlay();
+          return;
+        }
+
+        // Prompt for password
         let attempts = 0;
         while (true) {
-          const input = prompt(attempts === 0 ? "Enter password to view this page:\n\nHint: " + hint : "Incorrect. Try again:\n\nHint: " + hint);
-          if (input === password) break;
+          const input = prompt(attempts === 0 ? "Enter password to view this page:\n\nHint: " + HINT : "Incorrect. Try again:\n\nHint: " + HINT);
+          if (input === PASSWORD) {
+            setCookie(COOKIE_NAME, COOKIE_VALUE, DAYS);
+            removeOverlay();
+            break;
+          }
           if (input === null) {
             document.addEventListener("DOMContentLoaded", function() {
               const overlay = document.getElementById("pw-overlay");
@@ -100,8 +128,10 @@ const isProd = import.meta.env.PROD;
   {isProd && (
     <script>
       (function() {
+        const cookieMatch = document.cookie.match(new RegExp('(^| )portfolio_access=([^;]+)'));
+        const hasAccess = cookieMatch && cookieMatch[2] === "calebmiller010";
         const overlay = document.getElementById("pw-overlay");
-        if (overlay) overlay.remove();
+        if (overlay && hasAccess) overlay.remove();
       })();
     </script>
   )}
