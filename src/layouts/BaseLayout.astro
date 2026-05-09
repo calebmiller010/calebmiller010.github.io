@@ -1,0 +1,109 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'Caleb Miller — Senior Software Engineer',
+  description = 'Senior II Platform Engineer specializing in cloud-native backend systems, AI automation, and event-driven architecture. Based in Overland Park, KS.'
+} = Astro.props;
+const isProd = import.meta.env.PROD;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/styles/global.css" />
+  {isProd && (
+    <style>
+      #pw-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        backdrop-filter: blur(16px) saturate(0.8);
+        background: rgba(0,0,0,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #pw-overlay.denied {
+        backdrop-filter: none;
+        background: var(--color-bg, #f5f4f0);
+      }
+      #pw-overlay.denied::after {
+        content: "Access denied.";
+        font-family: var(--font-body, sans-serif);
+        color: var(--color-text-muted, #666);
+        font-size: 1.25rem;
+      }
+    </style>
+  )}
+  {isProd && (
+    <script>
+      (function() {
+        const password = "calebmiller10@icloud.com";
+        const hint = "It's my personal email I've shared.";
+        let attempts = 0;
+        while (true) {
+          const input = prompt(attempts === 0 ? "Enter password to view this page:\n\nHint: " + hint : "Incorrect. Try again:\n\nHint: " + hint);
+          if (input === password) break;
+          if (input === null) {
+            document.addEventListener("DOMContentLoaded", function() {
+              const overlay = document.getElementById("pw-overlay");
+              if (overlay) overlay.className = "denied";
+              document.body.innerHTML = "";
+            });
+            throw new Error("Access denied");
+          }
+          attempts++;
+        }
+      })();
+    </script>
+  )}
+</head>
+<body>
+  {isProd && <div id="pw-overlay"></div>}
+  <a href="#main" class="sr-only">Skip to content</a>
+  <slot />
+  <script>
+    // Theme toggle
+    (function(){
+      const html = document.documentElement;
+      const stored = null; // no localStorage in sandboxed envs — use system pref
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const toggle = document.querySelector('[data-theme-toggle]');
+        if (!toggle) return;
+        let current = html.getAttribute('data-theme');
+        updateIcon(toggle, current);
+        toggle.addEventListener('click', () => {
+          current = current === 'dark' ? 'light' : 'dark';
+          html.setAttribute('data-theme', current);
+          updateIcon(toggle, current);
+        });
+      });
+
+      function updateIcon(btn, theme) {
+        btn.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`);
+        btn.innerHTML = theme === 'dark'
+          ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+      }
+    })();
+  </script>
+  {isProd && (
+    <script>
+      (function() {
+        const overlay = document.getElementById("pw-overlay");
+        if (overlay) overlay.remove();
+      })();
+    </script>
+  )}
+</body>
+</html>

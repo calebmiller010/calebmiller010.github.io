@@ -1,0 +1,108 @@
+---
+const navLinks = [
+  { href: '/#work', label: 'Work' },
+  { href: '/#projects', label: 'Projects' },
+  { href: '/#about', label: 'About' },
+];
+---
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav__inner">
+    <!-- SVG Logo Mark -->
+    <a href="/" class="nav__logo" aria-label="Caleb Miller — Home">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--color-accent)"/>
+        <path d="M8 10h6l4 6-4 6H8l4-6-4-6z" fill="white" opacity="0.9"/>
+        <path d="M18 10h6v12h-6V10z" fill="white" opacity="0.6"/>
+      </svg>
+      <span class="nav__wordmark">CM</span>
+    </a>
+
+    <ul class="nav__links" role="list">
+      {navLinks.map(link => (
+        <li><a href={link.href} class="nav__link">{link.label}</a></li>
+      ))}
+    </ul>
+
+    <div class="nav__actions">
+      <button
+        class="nav__theme-toggle"
+        data-theme-toggle
+        aria-label="Toggle color mode"
+        type="button"
+      ></button>
+      <a href="mailto:calebmiller10@icloud.com" class="btn btn--primary">
+        Hire Me
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: oklch(from var(--color-bg) l c h / 0.85);
+  border-bottom: 1px solid var(--color-border);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  height: 64px;
+}
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+.nav__wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-base);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+  margin-left: auto;
+}
+.nav__link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+.nav__link:hover { color: var(--color-text); }
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.nav__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+.nav__theme-toggle:hover {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+  background: var(--color-accent-glow);
+}
+@media (max-width: 640px) {
+  .nav__links { display: none; }
+  .nav__wordmark { display: none; }
+}
+</style>

@@ -1,0 +1,231 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} — Caleb Miller`} description={project.data.description}>
+  <Nav />
+
+  <main id="main">
+    <article class="project-detail">
+      <div class="container project-detail__inner">
+        <!-- Header -->
+        <header class="project-detail__header">
+          <div class="project-detail__meta">
+            <span class="tag tag--accent">{project.data.category}</span>
+            <a href="/" class="project-detail__back">← All projects</a>
+          </div>
+          <h1 class="project-detail__title">{project.data.title}</h1>
+          <p class="project-detail__tagline">{project.data.tagline}</p>
+        </header>
+
+        <!-- Progress -->
+        <div class="project-detail__progress">
+          <div class="progress-track">
+            <div class="progress-fill" style={`width: ${project.data.progress}%`}></div>
+          </div>
+          <span class="progress-text">{project.data.progress}% shipped</span>
+        </div>
+
+        <!-- CTA bar -->
+        <div class="project-detail__cta-bar">
+          <div class="project-detail__metric">
+            <span class="project-detail__metric-num">{project.data.heroMetric}</span>
+          </div>
+          <a
+            href={project.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn--primary project-detail__live-link"
+          >
+            Visit live site
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 17L17 7M17 7H7M17 7v10"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Content -->
+        <div class="project-detail__content prose">
+          <Content />
+        </div>
+
+        <!-- Tags -->
+        <div class="project-detail__tags">
+          {project.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .project-detail {
+    padding-block: clamp(var(--space-12), 8vw, var(--space-24));
+  }
+  .project-detail__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    max-width: var(--content-narrow);
+  }
+  .project-detail__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .project-detail__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .project-detail__back {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    transition: color var(--transition);
+  }
+  .project-detail__back:hover {
+    color: var(--color-accent);
+  }
+  .project-detail__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    line-height: 1.1;
+  }
+  .project-detail__tagline {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    max-width: none;
+  }
+
+  /* CTA bar */
+  .project-detail__cta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+  }
+  .project-detail__progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--color-surface-offset);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: var(--radius-full);
+    transition: width 800ms var(--ease-out-expo);
+  }
+  .progress-text {
+    font-size: var(--text-xs);
+    color: var(--color-text-faint);
+    font-weight: 500;
+  }
+  .project-detail__metric-num {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .project-detail__live-link {
+    gap: var(--space-2);
+  }
+
+  /* Content */
+  .project-detail__content {
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+  .project-detail__content :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    color: var(--color-text);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.01em;
+  }
+  .project-detail__content :global(h3) {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-2);
+  }
+  .project-detail__content :global(p) {
+    margin-bottom: var(--space-4);
+    max-width: none;
+  }
+  .project-detail__content :global(ul) {
+    list-style: disc;
+    padding-left: var(--space-5);
+    margin-bottom: var(--space-4);
+  }
+  .project-detail__content :global(ul li) {
+    margin-bottom: var(--space-2);
+    max-width: none;
+  }
+  .project-detail__content :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .project-detail__content :global(a:hover) {
+    color: var(--color-accent-hover);
+  }
+  .project-detail__content :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .project-detail__content :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: var(--space-8) 0;
+  }
+
+  /* Tags */
+  .project-detail__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

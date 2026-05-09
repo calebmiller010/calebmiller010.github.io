@@ -1,0 +1,46 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container footer__inner">
+    <p class="footer__copy">© {year} Caleb Miller. Built with Astro.</p>
+    <div class="footer__links">
+      <a href="https://github.com/calebmiller010" target="_blank" rel="noopener noreferrer" class="footer__link">
+        GitHub
+      </a>
+      <a href="mailto:calebmiller10@icloud.com" class="footer__link">
+        Email
+      </a>
+    </div>
+  </div>
+</footer>
+<style>
+.footer {
+  margin-top: var(--space-32);
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-8);
+}
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.footer__copy {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  max-width: none;
+}
+.footer__links {
+  display: flex;
+  gap: var(--space-6);
+}
+.footer__link {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+.footer__link:hover { color: var(--color-accent); }
+</style>
