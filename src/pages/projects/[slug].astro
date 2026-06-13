@@ -7,7 +7,9 @@ import Footer from '../../components/Footer.astro';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map((project) => ({
-    params: { slug: project.id },
+    // Astro versions disagree on whether glob-loader ids keep the .md
+    // extension; strip it so URLs are stable across local and CI builds.
+    params: { slug: project.id.replace(/\.md$/, '') },
     props: { project },
   }));
 }

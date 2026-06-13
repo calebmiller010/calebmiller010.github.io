@@ -171,7 +171,7 @@ const skills = [
         <div class="projects-grid">
           {projects.map((project) => (
             <a
-              href={`/projects/${project.id}`}
+              href={`/projects/${project.id.replace(/\.md$/, '')}`}
               class={`project-card fade-in ${project.data.featured ? 'project-card--featured' : ''}`}
             >
               <div class="project-card__header">
