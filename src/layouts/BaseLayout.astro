@@ -9,7 +9,6 @@ const {
   title = 'Caleb Miller — Senior Software Engineer',
   description = 'Senior II Platform Engineer specializing in cloud-native backend systems, AI automation, and event-driven architecture. Based in Overland Park, KS.'
 } = Astro.props;
-const isProd = import.meta.env.PROD;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -19,83 +18,8 @@ const isProd = import.meta.env.PROD;
   <meta name="description" content={description} />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  {isProd && (
-    <style>
-      #pw-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        backdrop-filter: blur(16px) saturate(0.8);
-        background: rgba(0,0,0,0.35);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      #pw-overlay.denied {
-        backdrop-filter: none;
-        background: var(--color-bg, #f5f4f0);
-      }
-      #pw-overlay.denied::after {
-        content: "Access denied.";
-        font-family: var(--font-body, sans-serif);
-        color: var(--color-text-muted, #666);
-        font-size: 1.25rem;
-      }
-    </style>
-  )}
-  {isProd && (
-    <script>
-      (function() {
-        const COOKIE_NAME = "portfolio_access";
-        const COOKIE_VALUE = "calebmiller010";
-        const PASSWORD = "calebmiller10@icloud.com";
-        const HINT = "It's my personal email I've shared.";
-        const DAYS = 30;
-
-        function getCookie(name) {
-          const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-          return match ? match[2] : null;
-        }
-        function setCookie(name, value, days) {
-          const expires = new Date(Date.now() + days * 864e5).toUTCString();
-          document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/; SameSite=Lax';
-        }
-        function removeOverlay() {
-          const overlay = document.getElementById("pw-overlay");
-          if (overlay) overlay.remove();
-        }
-
-        // Already authenticated?
-        if (getCookie(COOKIE_NAME) === COOKIE_VALUE) {
-          removeOverlay();
-          return;
-        }
-
-        // Prompt for password
-        let attempts = 0;
-        while (true) {
-          const input = prompt(attempts === 0 ? "Enter password to view this page:\n\nHint: " + HINT : "Incorrect. Try again:\n\nHint: " + HINT);
-          if (input === PASSWORD) {
-            setCookie(COOKIE_NAME, COOKIE_VALUE, DAYS);
-            removeOverlay();
-            break;
-          }
-          if (input === null) {
-            document.addEventListener("DOMContentLoaded", function() {
-              const overlay = document.getElementById("pw-overlay");
-              if (overlay) overlay.className = "denied";
-              document.body.innerHTML = "";
-            });
-            throw new Error("Access denied");
-          }
-          attempts++;
-        }
-      })();
-    </script>
-  )}
 </head>
 <body>
-  {isProd && <div id="pw-overlay"></div>}
   <a href="#main" class="sr-only">Skip to content</a>
   <slot />
   <script>
@@ -126,15 +50,5 @@ const isProd = import.meta.env.PROD;
       }
     })();
   </script>
-  {isProd && (
-    <script>
-      (function() {
-        const cookieMatch = document.cookie.match(new RegExp('(^| )portfolio_access=([^;]+)'));
-        const hasAccess = cookieMatch && cookieMatch[2] === "calebmiller010";
-        const overlay = document.getElementById("pw-overlay");
-        if (overlay && hasAccess) overlay.remove();
-      })();
-    </script>
-  )}
 </body>
 </html>

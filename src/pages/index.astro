@@ -29,7 +29,7 @@ const skills = [
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__meta">
-          <span class="tag tag--accent">Available for new roles</span>
+          <span class="tag tag--accent">Open to senior roles & contract work</span>
         </div>
         <h1 class="hero__headline">
           Senior Engineer.<br />
@@ -59,6 +59,39 @@ const skills = [
             <span class="stat__label">Years shipping</span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ── Featured Case Study ───────────────────────── -->
+    <section class="section" id="case-study">
+      <div class="container">
+        <a href="/projects/church-automation" class="feature-banner fade-in">
+          <div class="feature-banner__body">
+            <span class="tag tag--accent">Featured case study</span>
+            <h2 class="feature-banner__title">An event-driven content pipeline that runs itself</h2>
+            <p class="feature-banner__sub">
+              S3 → Lambda → Batch/Whisper → two-stage LLM post-processing → formatted documents,
+              plus a 12-workflow n8n orchestration system with a member portal. Built solo for a
+              200+ member organization, ~$50/month of infrastructure, in production since early
+              2026 without missing a service.
+            </p>
+            <span class="feature-banner__cta">Read the architecture deep-dive →</span>
+          </div>
+          <div class="feature-banner__stats">
+            <div class="stat">
+              <span class="stat__num">~1 hr</span>
+              <span class="stat__label">maintenance per month</span>
+            </div>
+            <div class="stat">
+              <span class="stat__num">2×/wk</span>
+              <span class="stat__label">end-to-end unattended runs</span>
+            </div>
+            <div class="stat">
+              <span class="stat__num">0</span>
+              <span class="stat__label">missed services in production</span>
+            </div>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -188,11 +221,12 @@ const skills = [
     <section class="section section--cta">
       <div class="container">
         <div class="cta-block fade-in">
-          <p class="cta-block__eyebrow">Open to new roles</p>
+          <p class="cta-block__eyebrow">Open to roles & contract work</p>
           <h2 class="cta-block__headline">Let's build something that matters.</h2>
           <p class="cta-block__body">
             I'm looking for Senior / Senior II engineering roles at companies where technical depth and AI leverage are valued.
-            Remote-first. Target comp $180k+.
+            Remote-first. Target comp $180k+. Also available for contract and consulting engagements —
+            AI pipelines, automation systems, and event-driven backends like the case study above.
           </p>
           <div class="cta-block__actions">
             <a href="mailto:calebmiller10@icloud.com" class="btn btn--primary">
@@ -262,6 +296,72 @@ const skills = [
   flex-shrink: 0;
 }
 @media (max-width: 640px) { .stat__divider { display: none; } }
+
+/* ── Featured case study banner ───────────────────────── */
+.feature-banner {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: clamp(var(--space-6), 4vw, var(--space-10));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.feature-banner:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--color-accent);
+  transform: translateY(-2px);
+}
+.feature-banner__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 58ch;
+}
+.feature-banner__body .tag { align-self: flex-start; }
+.feature-banner__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+.feature-banner__sub {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+.feature-banner__cta {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.feature-banner__stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-5);
+  padding-left: var(--space-8);
+  border-left: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .feature-banner { flex-direction: column; }
+  .feature-banner__stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 0;
+    border-left: none;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+}
 
 /* ── Section shared ───────────────────────────────────── */
 .section {
